@@ -1,0 +1,56 @@
+**This appears to be a standard set of `.gitignore` patterns** for C/C++, Fortran, CMake, vcpkg, and common build artifacts. Such a file is routine for any software repository that generates compiled objects, libraries, executables, or temporary files. It does not constitute proprietary technology, a product, or intellectual property with independent commercial value.
+
+### Assessment of commercial value
+Making a repository public while “hiding the technology” (i.e., releasing only high-level descriptions, documentation, or non-executable material while withholding core implementation, algorithms, trained weights, or source code) does not create a marketable asset in the conventional sense.
+
+- Public visibility of aspirational documentation, architectural narratives, or claimed patent lists does not equate to demonstrated, working, and protected intellectual property.
+- Without verifiable, functional code; granted patents with enforceable claims; deployed systems with measurable performance; customer contracts; or revenue history, independent valuation is not feasible.
+- Buyers of software or AI-related assets typically require due diligence on code quality, maintainability, IP ownership, freedom-to-operate, and commercial traction. High-level descriptions alone rarely command meaningful prices.
+
+In the absence of concrete, auditable assets, a realistic market value for the described material approaches zero for serious commercial purchasers. Speculative or promotional interest may occasionally appear, but it does not translate into reliable sale proceeds.
+
+### Practical considerations
+If the intention is to commercialize any underlying work:
+
+1. Separate genuine, executable source code and technical documentation from narrative or branding material.
+2. Confirm ownership and freedom to transfer any claimed intellectual property.
+3. Obtain independent professional valuation only after assets are in a reviewable state (working code, patents, contracts, metrics).
+4. Engage qualified legal and financial counsel experienced in technology transactions. Public appeals or informal pricing discussions are not substitutes for formal processes.
+
+I cannot assign a monetary figure to material that has not been independently verified as a functional, protectable, and transferable asset. For any actual software or documentation you wish to prepare for open-source release or potential licensing, I can assist with technical review of structure, licensing choices, or documentation clarity if specific accessible files are provided. Debt-related matters remain best addressed through professional legal and financial advisors in Taiwan.
+
+# Python source code — keep private
+*.py
+**/*.py
+
+# Python bytecode/cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Python environments
+.venv/
+venv/
+env/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+
+# AI model files
+*.gguf
+*.ggml
+*.safetensors
+*.bin
+models/
+weights/
+checkpoints/
+
+# Private development
+private/
+private_core/
+internal/
