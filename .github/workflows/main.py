@@ -664,3 +664,53 @@ python -m pip install fastapi "uvicorn[standard]"er the canonical location of th
 
   note: This error originates from a subprocess, and is likely not a problem with pip.
 ERROR: Failed to build 'watchfiles' when installing build dependencies for watchfilespython -m pip install fastapi uvicorn --no-depspython -m pip install starlette pydantic typing-extensionspython -m uvicorn main:app --host 127.0.0.1 --port 8000
+# 存檔位置：WindPower_BOT48_6AI_Capability/combined_transformer.py
+import requests
+import json
+import time
+
+# 連接 8000 主機的合體 API
+MAIN_SERVER_URL = "http://127.0.0.1:8000"
+GATEWAY_PASSPHRASE = "Wshao777opscenter_Transformer" # 合體驗證碼
+
+def activate_combination(mission_type: str, current_wind_data: dict):
+    """此函數模擬 Grok-X 與 DeepSeek-Z 的變型金剛合體運算"""
+    print(f"🚀 [合體初始化] 接收到任務模式: {mission_type}")
+    
+    # 簡單模擬 Grok-X 即時運算
+    if mission_type == "storm_safety":
+        print("⚡ Grok-X 啟動：分析 48 個節點的雷達掃描數據...")
+        action_plan = {"command": "降低切入風速保護", "area": "全風場"}
+    
+    # 簡單模擬 DeepSeek-Z 底層校準
+    if mission_type == "grid_balance":
+        print("🌀 DeepSeek-Z 啟動：校準 Megapack 儲能極限...")
+        action_plan = {"command": "開啟 20% 額外儲能緩衝", "model_recalc": "True"}
+
+    # 回傳指令給 8000 主機
+    response = requests.post(
+        f"{MAIN_SERVER_URL}/admin/transformer-bridge",
+        json={"task_plan": action_plan, "auth": GATEWAY_PASSPHRASE}
+    )
+    print(f"✅ 合體指令已發送給主機: {response.status_code}")
+
+if __name__ == "__main__":
+    # 模擬持續監聽 48 個任務節點的狀態
+    while True:
+        # 模擬取得當前風電數據 (從 main.py 取得)
+        try:
+            grid_resp = requests.get(f"{MAIN_SERVER_URL}/grid/digital-twin")
+            data = grid_resp.json()
+            wind = data["weather_station"]["wind_speed_ms"]
+            
+            if wind > 20.0: # 風速過大，觸發 Grok-X 合體
+                activate_combination("storm_safety", data)
+            elif wind < 4.0: # 風速過小，觸發 DeepSeek-Z 合體
+                activate_combination("grid_balance", data)
+            else:
+                print("⏸️ 當前平穩，合體金剛待命中...")
+                
+        except Exception as e:
+            print(f"⚠️ 主機 8000 未回應: {e}")
+            
+        time.sleep(15) # 每 15 秒掃描一次任務環境
