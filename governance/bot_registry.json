@@ -3,3 +3,35 @@
 { "name": "DeepSeek-Z_Drill_Bot", "role": "合體能量鑽頭", "status": "active", "ai_partner": "deepseek-z" },
 { "name": "Task_Bot_01", "role": "葉片巡檢合體", "status": "active", "ai_partner": "grok-x" },
 { "name": "Task_Bot_48", "role": "緊急儲能切換合體", "status": "active", "ai_partner": "deepseek-z" }
+{ "name": "Grok-X_Tank_Bot", "role": "合體先鋒裝甲", "status": "active", "ai_partner": "grok-x" },
+{ "name": "DeepSeek-Z_Drill_Bot", "role": "合體能量鑽頭", "status": "active", "ai_partner": "deepseek-z" },
+{ "name": "Task_Bot_01", "role": "葉片巡檢合體", "status": "active", "ai_partner": "grok-x" },
+{ "name": "Task_Bot_48", "role": "緊急儲能切換合體", "status": "active", "ai_partner": "deepseek-z" }
+{
+  "name": "Grok-X",
+  "id": "grok-x",
+  "role": "風暴戰術執行長 (Tactical Commander)",
+  "function": [
+    "多節點協同指令",
+    "風場突發事件預判",
+    "異種 AI 交火協議",
+    "資源重新分配"
+  ],
+  "permission": "execute",
+  "platform": "xAI",
+  "access_scope": "48任務全域控制"
+},
+{
+  "name": "DeepSeek-Z",
+  "id": "deepseek-z",
+  "role": "底層物理校準與後勤 (Physical Calibration)",
+  "function": [
+    "草皮/風機物理參數即時校準",
+    "儲能極限邊界推算",
+    "超大字數之故障日誌解析",
+    "多重簡繁中文任務簡報翻譯"
+  ],
+  "permission": "develop",
+  "platform": "DeepSeek",
+  "access_scope": "風電物理層與修復模組"
+}
