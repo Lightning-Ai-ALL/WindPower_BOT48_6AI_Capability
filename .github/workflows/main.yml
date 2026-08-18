@@ -201,3 +201,32 @@ jobs:
         with:
           name: combined-ai-report
           path: combined_result.json
+# .github/workflows/main.yml (擴充部分)
+
+  mars-mission:
+    name: 🪐 閃電出征 - 火星任務
+    runs-on: ubuntu-latest
+    steps:
+      - name: 觸發火星任務 (Grok-X 博派先鋒)
+        env:
+          API_URL: ${{ secrets.WINDPOWER_API_URL }}
+          API_KEY: ${{ secrets.WINDPOWER_API_KEY }}
+        run: |
+          curl --fail-with-body \
+            -X POST "$API_URL/api/mars/expedition" \
+            -H "Authorization: Bearer $API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "commander": "Grok-X",
+                  "mission": "Mars-Solar-Core-2026",
+                  "storm_level": 20,
+                  "target": "灵神星",
+                  "mode": "NONPHYSICAL"
+                }' \
+            -o mars_mission_result.json
+
+      - name: 上傳火星任務報告
+        uses: actions/upload-artifact@v4
+        with:
+          name: mars-mission-report
+          path: mars_mission_result.json
