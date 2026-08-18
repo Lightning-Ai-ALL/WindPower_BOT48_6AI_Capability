@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  grok-x-transformer:
+    build: .
+    container_name: lightning-grok-x-transformer
+    restart: unless-stopped
+    environment:
+      - MODE=SIMULATION_ONLY
+      - MARS_MISSION_ENABLED=true
+      - MAIN_SERVER_URL=http://host.docker.internal:8000
+      - GATEWAY_PASSPHRASE=Wshao777opscenter_Transformer
+      - POLL_INTERVAL=30
+    volumes:
+      - ./logs:/app/logs
+      - ./missions:/app/missions
+    networks:
+      - windpower-net
+
+networks:
+  windpower-net:
+    driver: bridge
