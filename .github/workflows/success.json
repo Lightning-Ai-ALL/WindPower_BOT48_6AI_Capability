@@ -1,0 +1,589 @@
+{
+  "status": "success",
+  "data": {
+    "command": "合體協議完成",
+    "mode": "NONPHYSICAL",
+    "agents": ["Guardian", "Storm", "Dispatch", "Reviewer"],
+    "outputs": {
+      "guardian": { "status": "ok", "message": "安全邊界確認：無實體控制" },
+      "storm": { "simulated_power": 1250, "status": "generating" },
+      "dispatch": { "recommended_units": ["T-01", "T-03"], "eta": "15min" },
+      "reviewer": { "passed": true, "notes": "邏輯一致" }
+    },
+    "combined_summary": {
+      "overall_status": "SIMULATION_ONLY",
+      "physical_control": "DISABLED",
+      "requires_approval": true,
+      "timestamp": "2026-08-18T12:00:00.000Z"
+    },
+    "origin": "Private Backend (Alien Planet)"
+  },
+  "message": "🤖 AI 機械派系合體完成。此結果僅為模擬轉述。"
+}
+{"action": "shoot", "vx": 1.0, "vy": 0.0}        }
+    }
+}, 2000); // 每2秒執行一次
+/**
+ * Uber Driver 低里程車資拒單腳本
+ * 條件：1公里低於 28 元自動拒絕
+ */
+
+auto.waitFor(); // 等待無障礙服務啟動
+toast("Uber 自動拒單腳本已啟動");
+
+// 模擬人類操作的隨機延遲 (防止風控)
+function randomSleep(min, max) {
+    let time = Math.floor(Math.random() * (max - min + 1)) + min;
+    sleep(time);
+}
+
+// 持續監聽
+while (true) {
+    // 1. 監聽 Uber 通知 (為了避免卡住，這裡用最簡單的輪詢抓取螢幕內容)
+    // 更進階的寫法可以用 notificationObserver 監聽通知列
+    let uiObject = textContains("元").findOnce(); 
+    let distObject = textContains("公里").findOnce();
+    
+    if (uiObject && distObject) {
+        // 2. 正規表達式萃取數值
+        let fareText = uiObject.text();
+        let distText = distObject.text();
+        
+        // 假設抓到字串為 "預估車資 25 元" 和 "距離 1.0 公里"
+        let fareMatch = fareText.match(/(\d+)/);
+        let distMatch = distText.match(/([\d.]+)/);
+        
+        if (fareMatch && distMatch) {
+            let fare = parseFloat(fareMatch[0]);
+            let dist = parseFloat(distMatch[0]);
+
+            // 3. 數學計算與判斷
+            if (dist > 0) {
+                let pricePerKm = fare / dist;
+                console.log("本次單價: " + pricePerKm + " 元/公里");
+
+                if (pricePerKm < 28) {
+                    toastLog("⚠️ 低於 28 元/公里，準備自動拒絕！");
+                    
+                    // 4. 關鍵：拒絕動作
+                    // 建議使用文字點擊 "拒絕" (文字通常比座標更穩定)
+                    let rejectBtn = text("拒絕").findOne(2000);
+                    // 或者是找 "不接"、"取消" 按鈕
+                    if (rejectBtn) {
+                        // 模擬人類延遲：先停頓 1~3 秒再點擊
+                        randomSleep(1000, 3000);
+                        rejectBtn.click();
+                        console.log("✅ 已自動拒絕此單");
+                    } else {
+                        console.log("⚠️ 找不到拒絕按鈕，可能已過期");
+                    }
+                }
+            }
+        }
+    }
+    
+    // 避免死循環過度消耗效能與觸發風控
+    sleep(500);
+}
+# foodpanda_uber_all_blocker_infinite.py
+import time
+import datetime
+import os
+
+# ==================== 設定區 ====================
+REMIND_INTERVAL_SECONDS = 900          # 15分鐘提醒一次（可自行修改）
+ALERT_TITLE = "【無限全平台阻擋】foodpanda + Uber (含三媽)"
+ALERT_MESSAGE = "⚠️ 偵測到外送訂單提醒！\n請手動拒絕所有熊貓、Uber，以及三媽的訂單"
+# ================================================
+
+def log_alert(message):
+    if not os.path.exists("log"):
+        os.makedirs("log")
+    with open("log/blocker_infinite.log", "a", encoding="utf-8") as f:
+        f.write(f"[{datetime.datetime.now()}] {message}\n")
+
+def send_alert():
+    # 強提醒（終端機 + 簡單 beep）
+    print("\n" + "="*60)
+    print("🚨🚨🚨  【外送無限阻擋提醒】 🚨🚨🚨")
+    print(ALERT_TITLE)
+    print(ALERT_MESSAGE)
+    print("="*60)
+    
+    # 簡單聲音提示（重複 beeps）
+    try:
+        print('\a')  # 系統提示音
+        time.sleep(0.3)
+        print('\a')
+        time.sleep(0.3)
+        print('\a')
+    except:
+        pass
+    
+    log_alert("無限全平台阻擋提醒已發送")
+
+def main():
+    print("=== foodpanda + Uber + 三媽 無限全平台阻擋程式 v3.0（零依賴版） ===")
+    print("⚡ 已取消 7 天限制，改為【無限循環】執行")
+    print(f"提醒間隔：{REMIND_INTERVAL_SECONDS//60} 分鐘一次")
+    print("適合你跑車期間放在背景執行\n")
+    print("⚠️ 無限循環程式請使用【 Ctrl + C 】手動停止\n")
+    
+    alert_count = 0
+    last_alert = 0
+    
+    # 原本有 end_time，現在改為 while True 無限循環
+    while True:
+        try:
+            now = time.time()
+            if now - last_alert >= REMIND_INTERVAL_SECONDS:
+                send_alert()
+                alert_count += 1
+                last_alert = now
+                print(f"第 {alert_count} 次提醒已發送 | 程式仍在無限背景運行中...")
+        except KeyboardInterrupt:
+            print("\n\n無限阻擋程式已手動停止。")
+            break
+        except Exception as e:
+            print(f"錯誤: {e}")
+        
+        time.sleep(60)   # 每分鐘檢查一次
+
+if __name__ == "__main__":
+    main()
+{
+  "name": "wind-pricing-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "axios": "^1.6.0",
+    "recharts": "^2.10.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:8000",
+  "browserslist": {
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version"]
+  }
+}
+{
+  "topic": "Samsung One UI 生成式 AI 與手機散熱管理",
+  "device_context": {
+    "brand": "Samsung",
+    "ui": "One UI",
+    "note": "手機沒有內建實體風扇，主要依靠被動散熱與軟體管理"
+  },
+  "generation_ai": {
+    "feature": "Galaxy AI",
+    "access_paths": [
+      "設定 → Galaxy AI",
+      "設定 → 進階功能 → Galaxy AI"
+    ],
+    "features": [
+      "圖像生成",
+      "生成編輯",
+      "寫作助手",
+      "摘要功能"
+    ],
+    "version_note": "不同 One UI 版本名稱可能不同"
+  },
+  "cooling_management": {
+    "physical_fan": false,
+    "cooling_methods": [
+      "石墨散熱片",
+      "均熱板（部分旗艦機）",
+      "軟體降頻控制",
+      "遊戲模式散熱管理"
+    ],
+    "settings": [
+      {
+        "path": "設定 → 電池與裝置維護 → 電池 → 背景使用限制",
+        "purpose": "限制背景高耗能程式"
+      },
+      {
+        "path": "遊戲中心 / Game Booster → 效能模式",
+        "modes": [
+          "標準",
+          "效能優先",
+          "省電"
+        ]
+      }
+    ]
+  },
+  "temperature_control_tips": [
+    "關閉不使用的 App",
+    "降低螢幕亮度",
+    "避免邊充電邊高負載運算"
+  ],
+  "future_ai_fan_control": {
+    "concept": "AI 生成手機散熱風扇控制程式",
+    "possible_stack": [
+      "One UI",
+      "Android App",
+      "Python AI 模型",
+      "溫度感測 API"
+    ],
+    "status": "可進一步設計架構"
+  }
+}
+{
+  "project": {
+    "name": "Lightning-Empire-Jules",
+    "version": "3.0",
+    "description": "一個基於多代理 AI、整合 Samsung One UI，專為「零成本決策輔助」與「自動化文檔生成」設計的開源框架。",
+    "repository": {
+      "url": "https://github.com/Wshao777/Lightning-Empire-Jules",
+      "visibility": "public"
+    }
+  },
+  "workflows": [
+    {
+      "name": "CI",
+      "file": "ci.yml",
+      "trigger": ["Push", "Pull Request"],
+      "function": "程式碼品質、測試、安全掃描"
+    },
+    {
+      "name": "模型驗證",
+      "file": "model-validation.yml",
+      "trigger": ["Push", "排程"],
+      "function": "RMSE、R²、信心區間驗證"
+    },
+    {
+      "name": "Docker 建置",
+      "file": "docker-build.yml",
+      "trigger": ["Push", "Tag"],
+      "function": "多架構映像建置與推送"
+    },
+    {
+      "name": "預發布部署",
+      "file": "staging-deploy.yml",
+      "trigger": "Develop Push",
+      "function": "自動部署到測試環境"
+    },
+    {
+      "name": "生產部署",
+      "file": "production-deploy.yml",
+      "trigger": ["Release", "手動"],
+      "function": "藍綠部署 + 自動回滾"
+    },
+    {
+      "name": "自動修復",
+      "file": "auto-heal.yml",
+      "trigger": ["排程", "Issue"],
+      "function": "自我檢測與修復"
+    },
+    {
+      "name": "定時預測",
+      "file": "scheduled-predict.yml",
+      "trigger": "Cron",
+      "function": "定時執行預測任務"
+    },
+    {
+      "name": "One UI 權限管理",
+      "file": "One UI.yml",
+      "trigger": "手動/權限變更",
+      "function": "手機最大權限配置"
+    }
+  ],
+  "architecture": {
+    "total_nodes": 5,
+    "skip_node_04_reason": "文化不吉利聯想，保留為未來擴充位",
+    "nodes": [
+      {
+        "id": "01",
+        "name": "Jules Taiwan Core",
+        "icon": "🇹🇼",
+        "role": "總任務協調與路由中心",
+        "components": ["總 Bot 管理員", "Agent Router", "任務分配中心", "Lightning Empire 主入口"]
+      },
+      {
+        "id": "02",
+        "name": "Legal AI Agent",
+        "icon": "⚖️",
+        "role": "免費法律資料整理助手、刑事案件時序輔助（⚠️ 正式程序須由律師審閱）",
+        "components": ["法律資料整理", "文件分析", "時間線整理", "公民科技輔助"]
+      },
+      {
+        "id": "03",
+        "name": "One UI Device Guardian",
+        "icon": "📱",
+        "role": "One UI 系統整合、電池 95% 保護、溫度與 5G 資源調度",
+        "components": ["Samsung One UI", "電池健康管理", "AI 工作排程", "溫度監控", "人類審核閘門"]
+      },
+      {
+        "id": "05",
+        "name": "Global AI Core",
+        "icon": "🌐",
+        "role": "主推理與程式碼生成核心，整合多個 AI 供應商協作",
+        "components": ["GPT AI", "中文 AI 能力整合", "程式生成", "架構設計", "推理分析"]
+      },
+      {
+        "id": "06",
+        "name": "Guardian Verification AI",
+        "icon": "🛡️",
+        "role": "影子驗證備援核心，防堵節點 05 出現邏輯錯誤（雙核防呆）",
+        "components": ["輸出驗證", "安全檢查", "錯誤偵測", "品質控制"]
+      }
+    ],
+    "pipeline_flow": "使用者 Git Push → Node 01 任務拆解 → Node 02 (法律) + Node 05 (生成核心) → Node 03 (One UI) 監控手機資源、人類審核 → Node 06 (驗證) 檢查 Node05 輸出是否矛盾 → GitHub Actions Bot 自動產出 Markdown → 自動 Commit 回寫至 Repository"
+  },
+  "new_requirements": {
+    "title": "降溫防水系統開發（安卓手機等）",
+    "description": "針對安卓手機（尤其 Samsung One UI 生態）開發兼具散熱降溫與防水保護的硬體/軟體整合方案。",
+    "goals": [
+      "主動/被動降溫機制（軟體調度、外接風扇控制、溫控 API）",
+      "防水檢測與保護模式（濕度感測、充電口防護、IP 等級對應）",
+      "One UI 整合：電池維護、溫度監控、Game Booster 聯動",
+      "自動化工作流程：異常溫度 → 通知 Node 03 → 啟動保護/限制資源"
+    ],
+    "integration_with_nodes": {
+      "node_03": "One UI Device Guardian 直接負責調度降溫策略與防水狀態回報",
+      "node_05": "生成最優降溫排程演算法或防水模式判斷邏輯",
+      "node_06": "驗證降溫措施是否有效（溫度數據比對）"
+    }
+  }
+          }
+{
+  "title": "地藏王菩薩本願法門全貌與修行綱要",
+  "dizang_core_teachings": {
+    "section_title": "地藏王菩薩｜法脈與核心",
+    "description": "地藏王菩薩為佛教中「大願」與「大孝」的圓滿象徵，核心教法包含以下層面：",
+    "principles": [
+      {
+        "item": 1,
+        "title": "孝道為本，願力無邊",
+        "content": "源自過去劫中婆羅門女與光目女救度母親之大願。經云：『若不先度罪苦，令是安樂，得至菩提，吾終未願成佛。』此為地藏法門之根源。"
+      },
+      {
+        "item": 2,
+        "title": "因果如實，業力甚大",
+        "content": "經云：『南閻浮提眾生，舉止動念，無不是業，無不是罪。』揭示業力能敵須彌、深巨海、障聖道，並給予具體對治之法。"
+      },
+      {
+        "item": 3,
+        "title": "方便救度，一聲佛號",
+        "content": "最殊勝救度在於『稱名』與『供養』。臨終設大供養、轉讀尊經、念佛菩薩名號，可助亡者脫離惡道，此為〈利益存亡品〉核心。"
+      },
+      {
+        "item": 4,
+        "title": "日常修持，十齋轉經",
+        "content": "於十齋日（初一、八、十四、十五、十八、二十三、二十四、二十八、二十九、三十日）對像讀經，可使居家無諸橫病、衣食豐溢、超度冤親。"
+      }
+    ]
+  },
+  "four_mindful_practices": {
+    "section_title": "修行心法與日常實踐",
+    "description": "結合抄經實踐與個人修行之四句心法：",
+    "practices": [
+      {
+        "key": "我反省",
+        "concept": "正視心念，不再逃避",
+        "sutra_reference": "眾生舉止動念，無不是業。",
+        "action_plan": "每天觀照心念，檢視是否起惡念、說傷人話或愧對良心。勇敢承認過失，即是消業之始。"
+      },
+      {
+        "key": "救世人",
+        "concept": "不求偉大，慈悲從身邊做起",
+        "sutra_reference": "地藏菩薩久遠劫來，發大重願，利益眾生。",
+        "action_plan": "不增加他人苦難。家庭中少苛責多體貼，社會上不傷害他人並給予善意，將『地獄不空，誓不成佛』落實於微行。"
+      },
+      {
+        "key": "抵我勢言",
+        "concept": "收攝強勢，化暴戾為慈悲",
+        "sutra_reference": "對治惡口、兩舌、毀謗、貢高我慢等言語惡業。",
+        "action_plan": "克制強勢、傲慢與情緒勒索之語言。用和緩、理性溝通替代氣勢壓人，終止惡緣。"
+      },
+      {
+        "key": "恩過兩清",
+        "concept": "了結因果，內心清淨",
+        "sutra_reference": "生死業緣，果報自受；父子至親，歧路各別，縱然相逢，無肯代受。",
+        "action_plan": {
+          "on_grace": "常存感恩，有恩必報。",
+          "on_fault": "承擔過失，真誠道歉與原諒他人。",
+          "ultimate_goal": "不欠人情與冤業債，不將怨恨放在心上，卸下負擔，輕安自在。"
+        }
+      }
+    ]
+  },
+  "conclusion": {
+    "summary": "『反省』為修持基礎，『救世』為願力延伸，『止言』為對治煩惱，『兩清』為心靈歸宿。",
+    "blessing": "願以此抄經功德，業障消除，煩惱減輕，心安自在，福慧雙修。"
+  }
+}
+{
+  "title": "地藏王菩薩手抄金",
+  "language": "zh-TW",
+  "type": "personal_practice_framework",
+  "tradition": "地藏菩薩法門",
+  "source_text": "《地藏菩薩本願經》",
+  "purpose": {
+    "primary": "將抄經內容轉化為日常反省與行願",
+    "principle": "經文為經文，個人修行心得為心得，不混為一談"
+  },
+  "core_values": [
+    {
+      "name": "我反省",
+      "principle": "正視自己的心念、言語與行為",
+      "practice": [
+        "承認自己的過失",
+        "檢查是否說過傷人的話",
+        "檢查是否做過愧對良心的事情",
+        "不把自己的錯誤推給他人",
+        "能改正的事情立即改正"
+      ]
+    },
+    {
+      "name": "救世人",
+      "principle": "從不增加他人的苦難開始",
+      "practice": [
+        "能力所及時幫助他人",
+        "不能幫助時至少不主動傷害",
+        "對困難中的人保持善意",
+        "把慈悲落實在日常行動"
+      ]
+    },
+    {
+      "name": "抵我勢言",
+      "principle": "收攝強勢、傲慢與傷人的言語",
+      "practice": [
+        "說話前先停下來",
+        "避免用氣勢壓迫他人",
+        "避免惡口、兩舌與毀謗",
+        "以理性與和緩方式溝通",
+        "用行動取代情緒性的強勢表達"
+      ]
+    },
+    {
+      "name": "恩過兩清",
+      "principle": "知恩、認過、負責、放下",
+      "practice": {
+        "恩": [
+          "記得他人的善意",
+          "心存感謝",
+          "能力所及回報"
+        ],
+        "過": [
+          "承認自己的過失",
+          "真誠道歉",
+          "必要時進行合理補償"
+        ],
+        "兩清": [
+          "完成應負的責任",
+          "不讓怨恨持續擴大",
+          "不以過去的傷害繼續傷害別人",
+          "重新向前生活"
+        ]
+      }
+    }
+  ],
+  "地藏法門核心": [
+    {
+      "name": "大願",
+      "meaning": "以救度眾生、利益眾生作為願行核心"
+    },
+    {
+      "name": "大孝",
+      "meaning": "由報答親恩延伸至利益一切眾生"
+    },
+    {
+      "name": "因果",
+      "meaning": "對自己的身口意與行為負責"
+    },
+    {
+      "name": "稱名",
+      "meaning": "依佛教經典所述，以稱念佛菩薩名號作為修持方式之一"
+    },
+    {
+      "name": "供養",
+      "meaning": "依經典所述，以供養、讀誦、造像等善行培植善因"
+    }
+  ],
+  "daily_practice": {
+    "morning": [
+      "提醒自己今日少造惡言",
+      "提醒自己尊重他人",
+      "提醒自己遇事先反省"
+    ],
+    "during_day": [
+      "說話前停一下",
+      "遇到衝突先降低情緒",
+      "能幫助他人時量力而為",
+      "做錯事情立即修正"
+    ],
+    "evening": [
+      "回顧今日言行",
+      "檢查是否造成他人困擾",
+      "向需要道歉的人道歉",
+      "將今日能改正的事情記下"
+    ]
+  },
+  "copying_practice": {
+    "name": "地藏菩薩本願經手抄",
+    "method": [
+      "恭敬抄寫",
+      "逐字確認",
+      "遇到疑似錯字先查證",
+      "經文原文與個人心得分開保存"
+    ],
+    "text_quality_rule": {
+      "ocr_text": "需人工或可靠版本校對",
+      "handwritten_text": "可能存在漏字、誤字或異體字",
+      "verified_text": "不得未經核對就宣稱為完整原經文"
+    }
+  },
+  "four_sentence_vow": {
+    "我反省": "不逃避自己的過失",
+    "救世人": "不增加他人的苦難，能力所及則行善",
+    "抵我勢言": "收攝強勢與傷人的言語",
+    "恩過兩清": "知恩、認過、負責，完成責任後放下怨恨"
+  },
+  "ethical_boundary": [
+    "不以宗教之名要求他人服從",
+    "不以救世之名傷害他人",
+    "不以因果之名責怪受苦的人",
+    "不以功德之名要求他人回報",
+    "不以懺悔之名否定自己的基本尊嚴",
+    "修行應落實於尊重、善意與負責任的行動"
+  ],
+  "closing": {
+    "principle": "從抄經到行願",
+    "summary": "把經文中的善念轉化為自己的日常行為",
+    "four_steps": [
+      "反省",
+      "行善",
+      "止惡言",
+      "完成責任後放下怨恨"
+    ]
+  }
+    }
+{
+  "status": "success",
+  "data": {
+    "command": "合體協議完成",
+    "mode": "NONPHYSICAL",
+    "agents": ["Guardian", "Storm", "Dispatch", "Reviewer"],
+    "outputs": {
+      "guardian": { "status": "ok", "message": "安全邊界確認：無實體控制" },
+      "storm": { "simulated_power": 1250, "status": "generating" },
+      "dispatch": { "recommended_units": ["T-01", "T-03"], "eta": "15min" },
+      "reviewer": { "passed": true, "notes": "邏輯一致" }
+    },
+    "combined_summary": {
+      "overall_status": "SIMULATION_ONLY",
+      "physical_control": "DISABLED",
+      "requires_approval": true,
+      "timestamp": "2026-08-18T12:00:00.000Z"
+    },
+    "origin": "Private Backend (Alien Planet)"
+  },
+  "message": "🤖 AI 機械派系合體完成。此結果僅為模擬轉述。"
+}
