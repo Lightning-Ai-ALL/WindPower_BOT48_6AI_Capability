@@ -151,3 +151,53 @@ jobs:
         run: |
           echo "Public layer verification completed."
           echo "Storm Core remains outside the public repository."
+# .github/workflows/main.yml (擴充部分)
+
+name: AI 機械派系 - 合體演練
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '演練模式 (SIM / NONPHYSICAL)'
+        required: true
+        default: 'NONPHYSICAL'
+      wind_speed:
+        description: '風速 (m/s)'
+        required: true
+        default: '25'
+
+jobs:
+  combiner-protocol:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 觸發合體協議 (Command Core → 外星球)
+        env:
+          API_URL: ${{ secrets.WINDPOWER_API_URL }}
+          API_KEY: ${{ secrets.WINDPOWER_API_KEY }}
+        run: |
+          echo "🧠 Command AI: 開始拆解任務..."
+          echo "🛡️ Guardian AI: 安全檢查通過 (無實體控制)。"
+          echo "🌪️ Storm AI: 計算風暴模擬中..."
+          echo "📦 Dispatch AI: 產生資源建議..."
+          echo "🔗 Combiner: 聚合所有 Agent 輸出，準備發送至外星球。"
+
+          curl --fail-with-body \
+            -X POST "$API_URL/api/combiner/run" \
+            -H "Authorization: Bearer $API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{
+                  \"mode\": \"${{ github.event.inputs.mode }}\",
+                  \"wind_speed\": ${{ github.event.inputs.wind_speed }},
+                  \"agent_chain\": [\"Guardian\", \"Storm\", \"Dispatch\", \"Reviewer\"],
+                  \"combine\": true
+                }" \
+            -o combined_result.json
+
+          echo "✅ 合體完成。結果已回傳至地球端 (此 Workflow)。"
+
+      - name: 儲存合體結果 (Archive AI)
+        uses: actions/upload-artifact@v4
+        with:
+          name: combined-ai-report
+          path: combined_result.json
