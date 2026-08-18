@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2026-08-18",
+    "asteroid": "靈神星 (16 Psyche)",
+    "heliocentric": {
+      "x_au": 2.8912,
+      "y_au": 0.4123,
+      "z_au": 0.0156,
+      "distance_from_sun_au": 2.9201
+    },
+    "earth_distance_au": 1.9432,
+    "phase_angle_deg": 48.7,
+    "status": "SIMULATION",
+    "note": "簡化軌道模型，僅供任務模擬使用"
+  }
+]
