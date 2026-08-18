@@ -27,3 +27,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("runBtn");
   if (btn) btn.addEventListener("click", runSimulation);
 });
+const API_BASE = "https://api.example.com";
+
+async function runSimulation() {
+  const response = await fetch(
+    `${API_BASE}/api/simulation`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        mode: "NONPHYSICAL"
+      })
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  return response.json();
+}
