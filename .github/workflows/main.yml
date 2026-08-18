@@ -74,3 +74,80 @@ jobs:
             -H "Authorization: Bearer $API_KEY" \
             -H "Content-Type: application/json" \
             -d '{"mode":"NONPHYSICAL"}'permissions: 
+name: Lightning AI Auto-Patch Pipeline
+
+on:
+  push:
+    branches: ["main", "dev"]
+
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-public-layer:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Verify repository does not contain private core
+        shell: bash
+        run: |
+          set -e
+
+          echo "Checking for private source files..."
+
+          if git ls-files | grep -E '(^|/)\.env($|\.)|\.pem$|\.key$|\.p12$|\.pfx$|\.py$'; then
+            echo "ERROR: Private or sensitive files detected."
+            exit 1
+          fi
+
+          echo "OK: public repository boundary verified."
+
+      - name: Check for obvious hard-coded secrets
+        shell: bash
+        run: |
+          set -e
+
+          if git grep -n -E \
+            'sk-[A-Za-z0-9_-]+|PRIVATE_KEY[[:space:]]*=|API_KEY[[:space:]]*=' \
+            -- ':!*.md' ':!*.yml' ':!*.yaml'; then
+            echo "ERROR: Possible hard-coded secret detected."
+            exit 1
+          fi
+
+          echo "OK: no obvious hard-coded secrets detected."
+
+      - name: Verify frontend exists
+        shell: bash
+        run: |
+          test -f frontend/index.html
+          test -f frontend/app.js
+          echo "OK: frontend structure verified."
+
+      - name: Verify workflow structure
+        shell: bash
+        run: |
+          test -d .github/workflows
+          echo "OK: workflow structure verified."
+
+      - name: NONPHYSICAL simulation boundary
+        run: |
+          echo "======================================"
+          echo " Lightning AI Storm Core Simulation"
+          echo " MODE: NONPHYSICAL"
+          echo " REAL DEVICE CONTROL: DISABLED"
+          echo " GRID CONTROL: DISABLED"
+          echo " WEATHER CONTROL: DISABLED"
+          echo "======================================"
+
+      - name: Final verification
+        run: |
+          echo "Public layer verification completed."
+          echo "Storm Core remains outside the public repository."
