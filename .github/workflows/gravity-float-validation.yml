@@ -1,0 +1,71 @@
+# .github/workflows/gravity-float-validation.yml
+#
+# Gravity-Float CI validation
+# 僅進行程式／文件／數值模型驗證
+# 不進行任何實體設備控制或部署。
+
+name: Gravity-Float Validation
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "gravity_float_*.py"
+      - "docs/**"
+      - ".github/workflows/gravity-float-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Simulation Model
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy scipy
+
+      - name: Compile Python sources
+        run: |
+          python -m compileall -q .
+
+      - name: Check simulation safety flags
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          files = list(Path(".").glob("gravity_float_*.py"))
+
+          if not files:
+              print("No Gravity-Float Python files found.")
+              raise SystemExit(0)
+
+          for path in files:
+              text = path.read_text(encoding="utf-8")
+
+              if "SIMULATION_ONLY" not in text:
+                  raise RuntimeError(
+                      f"{path}: missing SIMULATION_ONLY safety marker"
+                  )
+
+              print(f"OK: {path}")
+          PY
+
+      - name: Validate documentation labels
+        run: |
+          if [ -f "NON-PHYSICAL-EXTREME.md" ]; then
+            grep -q "NON-PHYSICAL" "NON-PHYSICAL-EXTREME.md"
+          fi
+
+          echo "Simulation-only documentation check passed."
