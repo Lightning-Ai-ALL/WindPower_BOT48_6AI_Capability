@@ -1,0 +1,21 @@
+{
+  "mission_id": "Mars-Solar-Core-2026",
+  "name": "閃電出征｜火星太陽能核心任務",
+  "commander": "Grok-X",
+  "co_pilot": "DeepSeek-Z",
+  "status": "SIMULATION_READY",
+  "mode": "NONPHYSICAL",
+  "storm_level": 20,
+  "target": "靈神星 (16 Psyche)",
+  "safety": {
+    "physical_control": "DISABLED",
+    "simulation_only": true,
+    "requires_human_approval": true
+  },
+  "objectives": [
+    "定位火星太陽能發電核心",
+    "鎖定火核心能量源",
+    "執行 20 級強颱風轉述協議",
+    "模擬轉述至地球軌道採集"
+  ]
+}
