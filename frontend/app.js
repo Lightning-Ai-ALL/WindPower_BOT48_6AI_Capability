@@ -48,4 +48,46 @@ async function runSimulation() {
   }
 
   return response.json();
+
+}
+// frontend/app.js (新增風力與派單功能)
+const API_BASE = "https://api.your-private-domain.com";
+
+// --- 風力預測 (公開查詢) ---
+async function getWindForecast() {
+  const params = {
+    windSpeed: document.getElementById("windSpeed").value,
+    turbineId: document.getElementById("turbineId").value
+  };
+  
+  const res = await fetch(`${API_BASE}/api/wind/forecast`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(params)
+  });
+  const data = await res.json();
+  // 顯示「建議調整值」與「預估電量」
+  document.getElementById("forecastResult").textContent = JSON.stringify(data, null, 2);
+}
+
+// --- 派單請求 (需使用者動作觸發) ---
+async function requestDispatch() {
+  const payload = {
+    mode: "NONPHYSICAL", // 或 REAL / SIM
+    params: {
+      targetPower: document.getElementById("targetPower").value,
+      preferredTime: document.getElementById("timeSlot").value
+    }
+  };
+
+  const res = await fetch(`${API_BASE}/api/dispatch/request`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  
+  // 顯示「待審批」狀態與建議明細
+  document.getElementById("dispatchResult").textContent = JSON.stringify(data, null, 2);
+  // ⚠️ 前端只顯示「請求已送出」，不直接觸發設備
 }
