@@ -1,0 +1,76 @@
+# .github/workflows/main.yml
+name: WindPower Automation
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:               # 手動觸發
+
+jobs:
+  trigger-private-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout public frontend
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: frontend
+
+      - name: Validate frontend files
+        run: |
+          test -f frontend/index.html && echo "✅ index.html exists"
+          test -f frontend/app.js && echo "✅ app.js exists"
+          
+      - name: Trigger Private Automation API
+        env:
+          API_URL: ${{ secrets.WINDPOWER_API_URL }}
+          API_KEY: ${{ secrets.WINDPOWER_API_KEY }}
+        run: |
+          curl --fail-with-body \
+            -X POST "$API_URL/api/automation/run" \
+            -H "Authorization: Bearer $API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"mode":"NONPHYSICAL", "scale":10000}' \
+            -o simulation_result.json
+          
+          echo "✅ Automation triggered. Result saved."
+
+      - name: Upload simulation artifact (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-output
+          path: simulation_result.json
+name: WindPower Automation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  automation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout public frontend
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            frontend
+
+      - name: Validate frontend
+        run: |
+          test -f frontend/index.html
+          test -f frontend/app.js
+          echo "Frontend validation OK"
+
+      - name: Trigger private backend
+        env:
+          API_URL: ${{ secrets.WINDPOWER_API_URL }}
+          API_KEY: ${{ secrets.WINDPOWER_API_KEY }}
+        run: |
+          curl --fail-with-body \
+            -X POST "$API_URL/api/automation/run" \
+            -H "Authorization: Bearer $API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"mode":"NONPHYSICAL"}'permissions: 
