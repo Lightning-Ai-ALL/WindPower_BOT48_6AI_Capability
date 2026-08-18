@@ -1,0 +1,30 @@
+{
+  "mission": "Mars-Solar-Core-2026",
+  "commander": "Grok-X (博派先鋒)",
+  "co_pilot": "DeepSeek-Z (物理校準)",
+  "status": "success",
+  "solar_core": {
+    "location": "火星軌道 - 太陽能陣列 Alpha",
+    "power_output_mw": 850,
+    "status": "locked"
+  },
+  "fire_core": {
+    "temperature_c": 3200,
+    "stability": "high",
+    "extraction_ready": true
+  },
+  "storm_protocol": {
+    "mode": "NONPHYSICAL",
+    "scale": 20000,
+    "wind_speed_ms": 75.0,
+    "target": "灵神星 (16 Psyche)",
+    "action": "轉述代回地球軌道採集"
+  },
+  "earth_orbit_eta_days": 180,
+  "safety": {
+    "physical_control": "DISABLED",
+    "requires_approval": true,
+    "simulation_only": true
+  },
+  "timestamp": "2026-08-19T12:00:00.000Z"
+}
