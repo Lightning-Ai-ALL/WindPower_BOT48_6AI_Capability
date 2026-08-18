@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTP 5.0g 防蟲震波 (超音波)</title>
+    <style>
+        body {
+            background: #0a0a12;
+            color: #c0c0d0;
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: #151525;
+            border: 1px solid #2a2a4a;
+            border-radius: 2rem;
+            padding: 2rem;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin: 0 0 0.2rem 0;
+            background: linear-gradient(135deg, #88ddff, #aa66ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .sub {
+            font-size: 0.7rem;
+            color: #777;
+            border-bottom: 1px solid #222;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+        .status {
+            background: #00000088;
+            border-left: 4px solid #aa66ff;
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #6a3f8a;
+            border: none;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+        }
+        button:hover { background: #8a5faa; transform: scale(0.98); }
+        button.danger { background: #a04060; }
+        button.danger:hover { background: #c06080; }
+        .footer {
+            font-size: 0.55rem;
+            color: #555;
+            text-align: center;
+            border-top: 1px solid #222;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+        }
+        .hz-badge {
+            background: #2a2a4a;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🛡️ 防蟲震波</h1>
+    <div class="sub">
+        <span>🔐 主權帳戶: Wshao777opscenter@gmail.com</span>
+        <span class="hz-badge">20k ~ 40kHz 掃頻</span>
+    </div>
+
+    <div class="status" id="logDisplay">
+        ⏸️ 待機中 (點擊啟動產生超音波震波)
+    </div>
+
+    <button id="toggleBtn">🔊 啟動防蟲震波</button>
+    <button id="gmailBtn" style="background: #2a4a6a; margin-top: 10px;">📧 複製 Gmail 通知範本 (手動寄送)</button>
+
+    <div class="footer">
+        © Hus Chih Li. 主權發明人 — 嚴禁外部使用<br>
+        超音波對多數昆蟲與齧齒動物具干擾效果。<br>
+        ⚠️ 請勿對寵物 (貓狗) 長時間使用。
+    </div>
+</div>
+
+<script>
+    (function(){
+        let ctx = null;
+        let isActive = false;
+        let osc = null;
+        let gainNode = null;
+        let sweepInterval = null;
+        const logDiv = document.getElementById('logDisplay');
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        // 頻率參數
+        const F_MIN = 20000;  // 20 kHz
+        const F_MAX = 40000;  // 40 kHz
+        const SWEEP_DURATION = 0.6; // 每次掃頻秒數
+
+        function setLog(msg, isErr = false) {
+            logDiv.innerHTML = `🛡️ ${msg}<br>🕒 ${new Date().toLocaleTimeString()}`;
+        }
+
+        function generateSweep(audioCtx, startFreq, endFreq, duration) {
+            // 使用 AudioWorklet 或簡易的 oscillator 頻率變化 (Chrome 支援 setValueCurveAtTime)
+            const osc = audioCtx.createOscillator();
+            osc.type = "sine";
+            // 設定頻率線性變化
+            const freqParam = osc.frequency;
+            freqParam.setValueAtTime(startFreq, audioCtx.currentTime);
+            freqParam.linearRampToValueAtTime(endFreq, audioCtx.currentTime + duration);
+
+            const gain = audioCtx.createGain();
+            gain.gain.value = 0.15; // 音量適中
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            return { osc, gain };
+        }
+
+        function startShield() {
+            if (ctx) {
+                ctx.close();
+                ctx = null;
+            }
+            ctx = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctx.state === 'suspended') ctx.resume();
+
+            let direction = 1; // 1 = 上升, -1 = 下降
+            let currentFreq = F_MIN;
+
+            function playSweep() {
+                if (!isActive) return;
+                const start = currentFreq;
+                const end = (direction === 1) ? F_MAX : F_MIN;
+                const dur = SWEEP_DURATION;
+
+                const { osc, gain } = generateSweep(ctx, start, end, dur);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + dur + 0.05);
+
+                // 更新下一次頻率起始點
+                currentFreq = end;
+                direction *= -1; // 來回震盪
+
+                // 短暫靜音間隔 (形成脈衝)
+                setTimeout(() => {
+                    if (isActive) playSweep();
+                }, (dur + 0.1) * 1000);
+            }
+
+            // 立即開始第一段
+            playSweep();
+            setLog(`🔄 震波運作中 (${F_MIN/1000}kHz ↔ ${F_MAX/1000}kHz 掃頻)`);
+        }
+
+        function stopShield() {
+            isActive = false;
+            if (ctx) {
+                ctx.close();
+                ctx = null;
+            }
+            if (sweepInterval) {
+                clearTimeout(sweepInterval);
+                sweepInterval = null;
+            }
+            setLog("⏸️ 震波已停止 (超音波關閉)");
+            toggleBtn.innerText = "🔊 啟動防蟲震波";
+            toggleBtn.className = "";
+        }
+
+        function toggleShield() {
+            if (!isActive) {
+                // 啟動
+                if (!ctx) {
+                    try {
+                        startShield();
+                        isActive = true;
+                        toggleBtn.innerText = "⏹️ 停止震波";
+                        toggleBtn.className = "danger";
+
+                        // 複製 Gmail 通知 (自動複製到剪貼簿)
+                        const gmailMsg = `🛡️ 防蟲震波已啟動 (網頁版)
+時間: ${new Date().toLocaleString()}
+頻率: 20kHz ~ 40kHz 來回掃頻
+狀態: 持續運作中，直到手動關閉。
+主權帳戶: Wshao777opscenter@gmail.com`;
+                        navigator.clipboard.writeText(gmailMsg).then(() => {
+                            setLog("📧 Gmail 範本已複製到剪貼簿，請貼到 Gmail 寄出");
+                        }).catch(() => {
+                            setLog("⚠️ 無法自動複製，請手動複製上方資訊");
+                        });
+                    } catch(e) {
+                        setLog(`❌ 啟動失敗: ${e.message}`, true);
+                    }
+                }
+            } else {
+                stopShield();
+            }
+        }
+
+        toggleBtn.onclick = toggleShield;
+
+        // Gmail 手動複製按鈕
+        document.getElementById('gmailBtn').onclick = function() {
+            const msg = `🛡️ 防蟲震波通知 (GTP 5.0g)
+時間: ${new Date().toLocaleString()}
+頻率: 20kHz ~ 40kHz 掃頻
+主權帳戶: Wshao777opscenter@gmail.com
+狀態: 手動發送測試。`;
+            navigator.clipboard.writeText(msg).then(() => {
+                setLog("📧 Gmail 內容已複製，請貼到信箱寄出");
+            });
+        };
+
+        setLog("✅ 就緒 (點擊啟動產生超音波震波)");
+    })();
+</script>
+</body>
+</html>

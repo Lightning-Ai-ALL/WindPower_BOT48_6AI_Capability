@@ -1,0 +1,39 @@
+{
+  "system": "Lightning AI Governance",
+  "version": "2.0",
+  "note": "This registry documents which of your own repos/branches each agent may read or write, and what human review is required before output goes public. It does not and cannot change any vendor's model safety behavior — that is controlled entirely by OpenAI/DeepSeek/Google/GitHub on their own servers, regardless of what is written here.",
+  "agents": [
+    {
+      "name": "ChatGPT",
+      "role": "Architecture Advisor",
+      "function": ["code architecture design", "system governance review"],
+      "permission": "review",
+      "platform": "OpenAI",
+      "repo_access": "read-only, all branches"
+    },
+    {
+      "name": "DeepSeek",
+      "role": "Programming Assistant",
+      "function": ["code generation", "image reading (as supported by DeepSeek's own product)", "zh-CN / zh-TW text support"],
+      "permission": "develop",
+      "platform": "DeepSeek",
+      "repo_access": "dev branches, PR-only writes"
+    },
+    {
+      "name": "Gemini",
+      "role": "Strategy Analyst",
+      "function": ["strategic analysis", "data analysis"],
+      "permission": "analyze",
+      "platform": "Google",
+      "repo_access": "read-only"
+    },
+    {
+      "name": "GitHub Copilot",
+      "role": "Coding Copilot",
+      "function": ["code completion", "code suggestions"],
+      "permission": "suggest",
+      "platform": "GitHub",
+      "repo_access": "inline suggestions only, no direct commits"
+    }
+  ]
+}

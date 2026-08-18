@@ -1,0 +1,10 @@
+{
+  "bots": [
+    { "name": "LightningEmperor_Bot", "role": "Control Tower", "status": "active" },
+    { "name": "Grok_Analyzer_bot", "role": "Analysis", "status": "active" },
+    { "name": "RedRabbit", "role": "Task Execution", "status": "active" },
+    { "name": "AutoRainDispatch", "role": "Weather Dispatch", "status": "active" },
+    { "name": "PipelineGateway", "role": "Access Control & Routing", "status": "active" },
+    { "name": "ReviewQueue_Bot", "role": "Human Review Gate", "status": "active" }
+  ]
+}

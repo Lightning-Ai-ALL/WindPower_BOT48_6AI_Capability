@@ -1,0 +1,42 @@
+{
+  "boundary_note": "These layers control which of YOUR bots/agents can read or write which of YOUR repo data, and what needs human sign-off before it goes public. They do not create a zone where any AI model operates without its own safety rules — no config file can do that, on any platform.",
+
+  "layers": {
+    "Public": {
+      "read": true,
+      "write": false,
+      "ai_access": ["ChatGPT", "DeepSeek", "Gemini", "Copilot"],
+      "description": "Public docs and demo data"
+    },
+    "Collaboration": {
+      "read": true,
+      "write": "pr_only",
+      "ai_access": ["DeepSeek", "Copilot"],
+      "description": "Dev repo — agents propose changes via PR, human merges"
+    },
+    "Draft": {
+      "read": true,
+      "write": "agent_draft_human_publish",
+      "ai_access": ["DeepSeek"],
+      "external_visibility": false,
+      "description": "Work-in-progress notes and unpublished drafts. Not yet reviewed, so not shown publicly or auto-exported. Still subject to each agent's normal safety rules — this only controls WHEN it becomes visible, not WHAT the agent will produce."
+    },
+    "Private Core": {
+      "read": "admin_only",
+      "write": "human_only",
+      "ai_access": [],
+      "description": "Core assets — human-edit only"
+    }
+  },
+
+  "review": {
+    "required_before_public_output": true,
+    "audit_log": true
+  },
+
+  "emergency_stop": {
+    "revoke_pat": true,
+    "archive_repo": false,
+    "block_branch": true
+  }
+}
