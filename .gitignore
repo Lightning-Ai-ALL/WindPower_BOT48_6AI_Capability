@@ -54,3 +54,115 @@ checkpoints/
 private/
 private_core/
 internal/
+# ============================================================
+# WindPower_BOT48_6AI_Capability — .gitignore
+# 目的：防止私有核心、模型、金鑰與編譯產物外洩
+# ============================================================
+
+# ---------- Python (私有核心，絕不上傳) ----------
+# 所有 Python 檔案應保留於私有後端，公開 Repo 不應包含任何 .py
+*.py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ---------- Python 虛擬環境 ----------
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ---------- 敏感金鑰與憑證 ----------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json
+*.p12
+*.pfx
+
+# ---------- AI 模型檔案 (權重/模型) ----------
+*.gguf
+*.ggml
+*.safetensors
+*.bin
+*.h5
+*.pb
+*.onnx
+models/
+weights/
+checkpoints/
+*.pt
+*.pth
+
+# ---------- 私有開發目錄 ----------
+private/
+private_core/
+internal/
+core/
+secret/
+
+# ---------- 編譯與建置產物 ----------
+build/
+dist/
+*.so
+*.dll
+*.dylib
+*.a
+*.lib
+*.exe
+*.obj
+*.o
+
+# ---------- Node.js / JavaScript (前端依賴) ----------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ---------- 作業系統雜項 ----------
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# ---------- 編輯器 / IDE ----------
+.vscode/
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# ---------- 日誌與暫存 ----------
+logs/
+*.log
+tmp/
+temp/
+*.tmp
+
+# ---------- 測試與覆蓋率 ----------
+.coverage
+.nyc_output/
+coverage/
+*.test.js
+*.spec.js
+
+# ---------- 你的特定附加規則 ----------
+# 若需要忽略特定中文名稱的檔案/目錄，請用明確路徑：
+# 補充/
+# 安裝檔.exe
+# *.txt
