@@ -1,0 +1,176 @@
+可以，直接按你目前的架構做 快速建檔版。重點是：公開 Repo 只放前端、Workflow、設定與文件；Storm Core / Grok-X 核心不放進公開 Repo。
+
+建議立即建立
+
+WindPower_BOT48_6AI_Capability/
+│
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
+│
+├── .github/
+│   └── workflows/
+│       └── main.yml
+│
+├── .gitignore
+└── README.md
+
+frontend/index.html
+
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>WindPower AI Control Surface</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main>
+    <h1>WindPower AI</h1>
+    <p>Storm Core — SIM / NONPHYSICAL</p>
+
+    <label>
+      風速
+      <input id="windSpeed" type="number" value="25">
+    </label>
+
+    <button id="run">啟動演練</button>
+
+    <pre id="result">等待演練...</pre>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+
+frontend/app.js
+
+const API_BASE = ""; // 私有 API 網址由部署環境提供，不寫 Secret
+
+document.querySelector("#run").addEventListener("click", async () => {
+  const windSpeed = Number(document.querySelector("#windSpeed").value);
+
+  const result = {
+    status: "SIMULATION_ONLY",
+    mode: "NONPHYSICAL",
+    agent_family: "GROK_X",
+    wind_speed: windSpeed,
+    physical_control: "DISABLED"
+  };
+
+  document.querySelector("#result").textContent =
+    JSON.stringify(result, null, 2);
+});
+
+.github/workflows/main.yml
+
+name: WindPower AI Simulation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify public surface
+        shell: bash
+        run: |
+          set -e
+
+          echo "Checking public repository..."
+
+          if find . \
+            -type f \
+            \( -name "*.py" -o -name ".env" -o -name "*.pem" -o -name "*.key" \) \
+            -not -path "./.git/*" | grep -q .; then
+            echo "Private file detected."
+            exit 1
+          fi
+
+          echo "Public repository check passed."
+
+      - name: Simulation-only verification
+        run: |
+          echo "Storm Core: PRIVATE"
+          echo "Grok-X: SIMULATION"
+          echo "Mode: NONPHYSICAL"
+          echo "Physical control: DISABLED"
+
+README.md
+
+# WindPower_BOT48_6AI_Capability
+
+WindPower AI public interface and automation surface.
+
+## Architecture
+
+Frontend
+→ GitHub Actions
+→ Private Storm Core
+→ SIM / NONPHYSICAL
+→ Result returned to frontend
+
+## AI Agents
+
+- Command AI
+- Guardian AI
+- Storm AI
+- Dispatch AI
+- Reviewer AI
+- Grok-X Series
+- Combiner
+
+## Security Boundary
+
+The public repository does not contain:
+
+- Storm Core source code
+- private AI model weights
+- API keys
+- credentials
+- physical-device control code
+
+All public workflows are simulation/verification only.
+
+`physical_control = DISABLED`
+
+最終結果
+
+公開 GitHub
+│
+├── frontend/             ← 可編輯 UI
+├── .github/workflows/    ← 自動化演練
+├── .gitignore            ← 防止私有檔案追蹤
+└── README.md
+        │
+        ▼
+   Private Backend
+        │
+   ┌────┴────┐
+   │ Storm   │
+   │ Core    │
+   └────┬────┘
+        │
+   Grok-X Series
+        │
+        ▼
+ SIM / NONPHYSICAL
+        │
+        ▼
+    結果轉述
+
+這樣建檔後，公開 Repo 本身就是「外殼／控制面」，Storm Core 才是私有核心。 不需要把 Python 核心硬塞進 .github/workflows/。
