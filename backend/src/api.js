@@ -114,3 +114,62 @@ app.post('/api/automation/run', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Private backend running on port ${PORT}`);
 });
+// backend/src/api.js (擴充部分)
+
+// --- 合體協議 (Combiner Protocol) ---
+app.post('/api/combiner/run', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Missing token' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  if (token !== process.env.INTERNAL_API_KEY) {
+    return res.status(403).json({ error: 'Invalid token' });
+  }
+
+  try {
+    const { mode, wind_speed, agent_chain, combine } = req.body;
+
+    // 1. 模擬各 Agent 的獨立計算 (實際情況會各自呼叫不同微服務)
+    const guardianCheck = { status: 'ok', message: '安全邊界確認：無實體控制' };
+    const stormResult = { simulated_power: wind_speed * 50, status: 'generating' };
+    const dispatchSuggestion = { recommended_units: ['T-01', 'T-03'], eta: '15min' };
+    const reviewResult = { passed: true, notes: '邏輯一致' };
+
+    // 2. 合體聚合 (Combiner)
+    let combinedReport = {};
+    if (combine) {
+      combinedReport = {
+        command: '合體協議完成',
+        mode: mode,
+        agents: agent_chain || ['Guardian', 'Storm', 'Dispatch', 'Reviewer'],
+        outputs: {
+          guardian: guardianCheck,
+          storm: stormResult,
+          dispatch: dispatchSuggestion,
+          reviewer: reviewResult
+        },
+        combined_summary: {
+          overall_status: 'SIMULATION_ONLY',
+          physical_control: 'DISABLED',
+          requires_approval: true,
+          timestamp: new Date().toISOString()
+        },
+        // 標記「飛外太空」的來源
+        origin: 'Private Backend (Alien Planet)'
+      };
+    }
+
+    // 3. 回傳合體結果
+    res.json({
+      status: 'success',
+      data: combinedReport,
+      message: '🤖 AI 機械派系合體完成。此結果僅為模擬轉述。'
+    });
+
+  } catch (err) {
+    console.error('[Combiner] Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
