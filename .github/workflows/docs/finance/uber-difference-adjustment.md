@@ -1,3 +1,4 @@
+#風力發電_BOT48_6AI_能力/.github/workflows/docs/finance/uber-difference-adjustment.md
 # 公開儲存庫政策
 
 **版本**：1.0  
