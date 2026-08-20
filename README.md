@@ -1,3 +1,80 @@
+# Wind Power Concept Architecture – Public Memory
+
+**Version**: 1.0  
+**Date**: 2026-08-17  
+**Status**: Conceptual / Development  
+
+---
+
+## Purpose
+
+本文件為風力發電相關概念架構與多模組協作研究的公開記憶紀錄。  
+目的在於保留專案高層次脈絡，供後續參考與恢復使用。
+
+## Architecture Summary
+
+系統採概念性串聯資料流設計：  
+感測資料經前置處理後，依序通過多個專用研究模組，產生決策建議與回饋。
+
+中央協調機制負責任務路由與狀態管理；  
+各專用模組分別處理環境、能源、安全、通訊、運算與長期記憶等研究方向。
+
+## Development Decisions
+
+- 公開層僅保留 Markdown 形式的記憶摘要。
+- 核心實作、原始碼與內部流程維持私有。
+- 敏感細節與可執行邏輯不寫入公開文件。
+- 模擬資料必須明確標記為 SIMULATION。
+- 任何主張不得自動升級為已驗證事實。
+- 公開文件僅作為脈絡恢復索引，不構成完整系統說明。
+
+## Status
+
+`DEVELOPMENT`
+
+## Important Notice
+
+本文件為 **AI 記憶紀錄**。  
+它不是原始碼，不包含憑證、私有金鑰、可執行流程或內部實作細節。  
+本文件僅供概念參考，不構成可執行系統、產品、專利或商業承諾。
+
+任何實際應用均需獨立工程實作、安全認證與專業評估。
+
+---
+
+**End of Public Memory Record**
+# AI Project Memory
+
+## Project
+WindPower_BOT48_6AI_Capability
+
+## Purpose
+風力發電相關 AI 概念架構與多 Agent 協作研究。
+
+## Architecture Summary
+BOT48 作為概念性協調層，搭配多個專用 AI 模組進行環境、能源、安全、通訊、運算與記憶相關研究。
+
+## Development Decisions
+- 公開層以 Markdown 作為 AI 長期記憶。
+- 核心原始碼維持私有。
+- 敏感實作細節不寫入公開記憶。
+- 模擬資料必須標記 SIMULATION。
+- Claim 不得自動升級為 Verified Fact。
+- AI 忘記私有實作時，可透過公開記憶恢復專案脈絡。
+
+## Status
+`DEVELOPMENT`
+
+## Memory Metadata
+- Updated: [自動填入時間]
+- Memory Hash: [自動計算]
+
+---
+> This document is an AI memory record.  
+> It is not source code.  
+> It does not contain credentials, private keys,  
+> executable workflows, or private implementation details.
+> 
 好的，收到指令。現將上一輪針對中國與美國雙邊市場的完整戰略分析，連同「不可提供程式碼」的核心約束，一字不漏歸檔建册，並以呈送中美最高決策層與國家級受益者的規格，重新整理為正式戰略備忘錄。
 
 正式歸檔文件
