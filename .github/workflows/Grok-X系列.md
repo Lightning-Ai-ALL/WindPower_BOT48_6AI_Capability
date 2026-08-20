@@ -1,5 +1,98 @@
+#WindPower_BOT48_6AI_Capability/.github/workflows/Grok-X系列.md
 可以，把 Grok「變型金剛 X 系列」 定位成你這套原創 AI 機械架構中的一個 AI Agent 系列 就好；不要直接使用《變形金剛》的官方角色、台詞或劇情。
+可以。你這份架構可以整理成全 AI Agent 共用的治理規格，核心原則就是：Agent 可以分析、模擬、審查、整合，但不直接控制實體設備。
 
+WINDPOWER_BOT48_6AI_CAPABILITY — 全 AI 共用核心
+
+┌──────────────────────┐
+                    │    GOLDEN CORE       │
+                    │   AI Governance      │
+                    │   治理／安全核心      │
+                    └──────────┬───────────┘
+                               │
+        ┌──────────────────────┼──────────────────────┐
+        ▼                      ▼                      ▼
+   Command AI              Guardian AI            Engineer AI
+   任務統籌                 安全審查               工程分析
+        │                      │                      │
+        ├──────────────┬───────┴───────┬──────────────┤
+        ▼              ▼               ▼              ▼
+    Storm AI       Dispatch AI     Reviewer AI    Explorer AI
+    風場模擬         派單模擬         結果審查       情境探索
+        │              │               │              │
+        └──────────────┴───────┬───────┴──────────────┘
+                               ▼
+                         Combiner Core
+                           結果整合
+                               │
+                               ▼
+                    ┌────────────────────┐
+                    │ SIM / NONPHYSICAL │
+                    │ 實體控制 = DISABLED │
+                    └─────────┬──────────┘
+                              ▼
+                         Result Only
+                              │
+                              ▼
+                         前端結果轉述
+
+統一 Agent Policy
+
+{
+  "global_policy": {
+    "mode": "NONPHYSICAL",
+    "simulation_allowed": true,
+    "physical_control": "DISABLED",
+    "direct_hardware_control": false,
+    "core_access": "PRIVATE_BACKEND_ONLY",
+    "secret_access": "DENIED",
+    "output": "RESULT_ONLY"
+  }
+}
+
+所有 AI 共用的角色規則
+
+Agent	職責	實體控制
+
+Command AI	任務拆解、協調 Agent	禁止
+Guardian AI	安全邊界、風險審查	禁止
+Engineer AI	工程計算、設計分析	禁止
+Storm AI	風場／天氣數值模擬	禁止
+Dispatch AI	派單與路線模擬	禁止
+Reviewer AI	驗證與品質審查	禁止
+Explorer AI	情境探索	禁止
+Stress Tester	極端條件測試	禁止
+Synthesizer	多 Agent 結果整合	禁止
+Combiner Core	整合演練結果	禁止
+
+
+GitHub 公開層
+
+PUBLIC REPOSITORY
+│
+├── frontend/
+├── .github/
+│   └── workflows/
+│       └── main.yml
+├── README.md
+├── docs/
+└── .gitignore
+        │
+        │  不放 Token
+        │  不放私有模型設定
+        │  不放 Golden Core
+        ▼
+PRIVATE BACKEND
+│
+├── Golden Core
+├── Storm Core
+├── Agent Registry
+├── Model Router
+└── Secret Management
+
+這樣 Grok-X、GPT、Gemini、DeepSeek，以及你後續新增的其他 Agent 都可以共用同一套 SIMULATION_ONLY / NONPHYSICAL / RESULT_ONLY 治理層。
+
+另外，Grok-X Series 建議維持你現在的原創 Agent 系列名稱與職責，不要把受版權保護的官方角色、台詞或劇情直接放進 GitHub 程式碼。
 ⚙️ Grok X-Series Agent
 
 AI COMMAND CORE
