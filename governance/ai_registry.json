@@ -1,75 +1,36 @@
-// 追加至 governance/ai_registry.json 的 "agents": [ ... ] 清單中
 {
-  "name": "Grok-X",
-  "id": "grok-x",
-  "role": "風暴戰術執行長 (Tactical Commander)",
-  "function": [
-    "多節點協同指令",
-    "風場突發事件預判",
-    "異種 AI 交火協議",
-    "資源重新分配"
-  ],
-  "permission": "execute",
-  "platform": "xAI",
-  "access_scope": "48任務全域控制"
-},
-{
-  "name": "DeepSeek-Z",
-  "id": "deepseek-z",
-  "role": "底層物理校準與後勤 (Physical Calibration)",
-  "function": [
-    "草皮/風機物理參數即時校準",
-    "儲能極限邊界推算",
-    "超大字數之故障日誌解析",
-    "多重簡繁中文任務簡報翻譯"
-  ],
-  "permission": "develop",
-  "platform": "DeepSeek",
-  "access_scope": "風電物理層與修復模組"
-}
-{
-  "name": "Grok-X",
-  "id": "grok-x",
-  "role": "風暴戰術執行長 (Tactical Commander)",
-  "function": [
-    "多節點協同指令",
-    "風場突發事件預判",
-    "異種 AI 交火協議",
-    "資源重新分配"
-  ],
-  "permission": "execute",
-  "platform": "xAI",
-  "access_scope": "48任務全域控制"
-},
-{
-  "name": "DeepSeek-Z",
-  "id": "deepseek-z",
-  "role": "底層物理校準與後勤 (Physical Calibration)",
-  "function": [
-    "草皮/風機物理參數即時校準",
-    "儲能極限邊界推算",
-    "超大字數之故障日誌解析",
-    "多重簡繁中文任務簡報翻譯"
-  ],
-  "permission": "develop",
-  "platform": "DeepSeek",
-  "access_scope": "風電物理層與修復模組"
-}
-{
-  "name": "Grok-X",
-  "id": "grok-x",
-  "role": "風暴戰術執行長 (Tactical Commander)",
-  "function": ["多節點協同指令", "風場突發事件預判", "異種 AI 交火協議", "資源重新分配"],
-  "permission": "execute",
-  "platform": "xAI",
-  "access_scope": "48任務全域控制"
-},
-{
-  "name": "DeepSeek-Z",
-  "id": "deepseek-z",
-  "role": "底層物理校準與後勤 (Physical Calibration)",
-  "function": ["草皮/風機物理參數即時校準", "儲能極限邊界推算", "超大字數之故障日誌解析", "多重簡繁中文任務簡報翻譯"],
-  "permission": "develop",
-  "platform": "DeepSeek",
-  "access_scope": "風電物理層與修復模組"
+  "registry_version": "2026_08",
+  "project_period": "2026_08",
+  "project": "Uber Driver",
+  "payment_status": "PAID",
+  "service_status": "AUTHORIZED",
+  "workspace": "PERSONAL_STUDIO",
+  "development_scope": "2026_07_21後的開發案",
+  "approval_policy": {
+    "mode": "SIMULATION_FIRST",
+    "human_review_required": true,
+    "auto_start": false,
+    "physical_control": false,
+    "execution_mode": "NONPHYSICAL"
+  },
+  "agents": [
+    {
+      "name": "Grok-X",
+      "id": "grok-x",
+      "role": "風暴戰術執行長 (Tactical Commander)",
+      "permission": "execute",
+      "platform": "xAI",
+      "access_scope": "48任務全域控制",
+      "activation": "PENDING_HUMAN_APPROVAL"
+    },
+    {
+      "name": "DeepSeek-Z",
+      "id": "deepseek-z",
+      "role": "底層物理校準與後勤 (Physical Calibration)",
+      "permission": "develop",
+      "platform": "DeepSeek",
+      "access_scope": "風電物理層與修復模組",
+      "activation": "PENDING_HUMAN_APPROVAL"
+    }
+  ]
 }
