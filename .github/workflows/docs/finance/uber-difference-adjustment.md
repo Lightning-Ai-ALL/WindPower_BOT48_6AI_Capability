@@ -1,5 +1,100 @@
-#風力發電_BOT48_6AI_能力/.github/workflows/docs/finance/uber-difference-adjustment.md
-# 公開儲存庫政策
+###風力發電_BOT48_6AI_能力/.github/workflows/docs/finance/uber-difference-adjustment.md
+# 公開只限注名庫
+可以。若你的意思是：
+
+> 對外只顯示「Anonymous AI」，但你自己知道背後屬於哪個 AI 體系。
+
+
+
+這可以設計成匿名化 Agent 身分層，而不是把真實模型名稱公開。
+
+USER
+                     │
+                     ▼
+              ┌──────────────┐
+              │  Anonymous AI │
+              │   公開身分     │
+              └──────┬───────┘
+                     │
+              Private Identity
+                     │
+        ┌────────────┼────────────┐
+        ▼            ▼            ▼
+   AI Family A   AI Family B   AI Family C
+        │            │            │
+        └────────────┼────────────┘
+                     ▼
+                Primary AI
+              2026-08 固定
+
+核心原則
+
+{
+  "public_identity": "Anonymous AI",
+  "private_identity": "KNOWN_TO_OWNER",
+  "model_identity": "PRIVATE",
+  "agent_family": "PRIVATE",
+  "primary_ai": "LOCKED",
+  "automatic_replacement": false,
+  "physical_control": false,
+  "mode": "NONPHYSICAL",
+  "output": "RESULT_ONLY"
+}
+
+這樣 GitHub 公開端只看到：
+
+Anonymous AI → 分析 → 審查 → 結果
+
+而你的私有後端才保存：
+
+Anonymous AI → Agent ID → AI Family → 實際模型／角色
+
+不過要注意，「匿名」應定義成對外隱藏 Agent 身分，而不是宣稱「完全無法追蹤」。如果系統有日誌、GitHub Actions、API Gateway 或雲端服務，仍可能存在技術紀錄。
+
+對你的架構來說，最乾淨的是：公開匿名、私有可識別、主控固定、Agent 不得自行換主控。
+可以，這個可以作為 2026 年 8 月的專案治理規則：主控 AI 固定，不因 Agent、模型或工作流變動而自動替換。
+
+對你指定的檔案：
+
+.github/workflows/docs/finance/uber-difference-adjustment.md
+
+建議核心規則寫成：
+
+governance:
+  period: "2026-08"
+  controller:
+    role: "PRIMARY_AI"
+    replacement: "DISABLED"
+    automatic_switch: false
+
+  agents:
+    role: "SUPPORTING_AI"
+    authority: "DELEGATED"
+    can_replace_primary: false
+
+  policy:
+    primary_ai_continuity: "PERMANENT"
+    agent_failure: "FALLBACK_TO_PRIMARY"
+    workflow_change: "DO_NOT_CHANGE_PRIMARY"
+
+架構
+
+PRIMARY AI
+              ┌──────────────┐
+              │  2026_08 主控  │
+              │  固定／不替換   │
+              └───────┬──────┘
+                      │
+          ┌───────────┼───────────┐
+          ▼           ▼           ▼
+       Finance      Reviewer    Other AI
+        Agent        Agent       Agents
+          │           │           │
+          └───────────┼───────────┘
+                      ▼
+                 Result / Audit
+
+這樣「Uber 差額補款」文件負責的是財務資料與結算邏輯，而「主控 AI 永不換」則屬於系統治理層，兩者可以明確分開，避免某個工作流修改時意外改掉主控架構。
 
 **版本**：1.0  
 **日期**：2026-08-20  
