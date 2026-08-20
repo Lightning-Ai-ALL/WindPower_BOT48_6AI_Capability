@@ -1,4 +1,33 @@
-// 擴充至 governance/bot_registry.json 的 "bots": [ ... ] 清單中 (保持原有1000個)
+{
+  "bots": [
+    "...原有 1000 個 Bot 保持不變...",
+
+    {
+      "name": "Grok-X_Tank_Bot",
+      "role": "合體先鋒裝甲",
+      "status": "active",
+      "ai_partner": "grok-x"
+    },
+    {
+      "name": "DeepSeek-Z_Drill_Bot",
+      "role": "合體能量鑽頭",
+      "status": "active",
+      "ai_partner": "deepseek-z"
+    },
+    {
+      "name": "Task_Bot_01",
+      "role": "葉片巡檢合體",
+      "status": "active",
+      "ai_partner": "grok-x"
+    },
+    {
+      "name": "Task_Bot_48",
+      "role": "緊急儲能切換合體",
+      "status": "active",
+      "ai_partner": "deepseek-z"
+    }
+  ]
+}
 { "name": "Grok-X_Tank_Bot", "role": "合體先鋒裝甲", "status": "active", "ai_partner": "grok-x" },
 { "name": "DeepSeek-Z_Drill_Bot", "role": "合體能量鑽頭", "status": "active", "ai_partner": "deepseek-z" },
 { "name": "Task_Bot_01", "role": "葉片巡檢合體", "status": "active", "ai_partner": "grok-x" },
