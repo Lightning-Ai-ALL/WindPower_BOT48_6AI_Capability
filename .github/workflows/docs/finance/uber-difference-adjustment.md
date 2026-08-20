@@ -1,4 +1,4 @@
-###風力發電_BOT48_6AI_能力/.github/workflows/docs/finance/uber-difference-adjustment.md
+3###風力發電_BOT48_6AI_能力/.github/workflows/docs/finance/uber-difference-adjustment.md
 # 公開只限注名庫
 可以。若你的意思是：
 
