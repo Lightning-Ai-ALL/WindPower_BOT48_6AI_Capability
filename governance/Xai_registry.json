@@ -51,3 +51,29 @@
     }
   ]
 }
+{
+  "security_event_policy": {
+    "event_type": "SUSPECTED_CODE_THEFT",
+    "status": "UNDER_REVIEW",
+    "unauthorized_access": "PROHIBITED",
+    "unauthorized_copying": "PROHIBITED",
+    "unauthorized_recovery": "PROHIBITED",
+    "evidence_preservation": "REQUIRED",
+    "authorized_recovery": "ALLOWED",
+    "target": "PRIVATE_CORE",
+    "human_review_required": true,
+    "automatic_action": false
+  }
+}
+{
+  "security_policy": {
+    "leak_response": "PRIVATE_RECOVERY_ONLY",
+    "unauthorized_copying": "PROHIBITED",
+    "unauthorized_access": "PROHIBITED",
+    "external_reuse": "DISABLED",
+    "recovery_source": "AUTHORIZED_SOURCE_ONLY",
+    "restore_target": "PRIVATE_CORE",
+    "human_review_required": true,
+    "automatic_execution": false
+  }
+}
