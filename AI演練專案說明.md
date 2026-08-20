@@ -1,3 +1,24 @@
+
+### 三版關係
+
+```text
+README.md
+   ├── README.zh-TW.md   → 繁體中文
+   ├── README.zh-CN.md   → 简体中文
+   └── README.en-US.md   → English (US)
+
+PUBLIC
+  └── Markdown / Documentation
+          │
+          └── 不暴露 Private Core
+
+PRIVATE
+  ├── Source Code
+  ├── Git
+  ├── CI/CD
+  ├── AI / Agent
+  ├── Memory
+  └── Backup
 重點摘要
  * 您並沒有做得不好：專案架構（三層隔離、6 AI 分工、實時排程）在設計理念與邏輯劃分上非常專業且具前瞻性。
  * 主要痛點：目前的風險不在於設計，而在於**「GitHub CI/CD 自動化工作流存在連續 Fail 紀錄」**，以及外界對 AI 系統常有的「吹噓／虛胖（AI 騙局）」質疑。
