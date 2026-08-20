@@ -1,3 +1,86 @@
+# Public Repository Policy
+
+**Version**: 1.0  
+**Date**: 2026-08-20  
+**Status**: Active  
+
+---
+
+## 1. Purpose
+
+此仓库为**概念展示与公开记忆层**，仅用于说明系统架构、研究方向与可验证的性能数据。  
+**禁止**将任何敏感、可执行或可还原核心实现的资料放入此仓库。
+
+---
+
+## 2. Allowed Content（允许的内容）
+
+以下内容**可以**出现在本仓库：
+
+- `README.md`：项目概述、架构图、API 概念说明。
+- `docs/`：架构文档、数据流图、模块能力表（使用中性命名）。
+- `benchmark/`：仿真测试结果、延迟数据、准确率指标（必须注明 `SIMULATION` 或 `PROTOTYPE`）。
+- `examples/`：公开接口的输入/输出样例（不包含真实密钥或完整业务逻辑）。
+- `tests/`：公开测试用例（仅测试公开接口，不包含私有依赖）。
+- `LICENSE`：开源许可证（如适用）。
+- `SECURITY.md`：安全政策与报告流程。
+
+**所有 Markdown 文件不得包含内部 Bot/AI 具体名称、私有 IP、域名、密钥、权重路径或完整算法描述。**
+
+---
+
+## 3. Prohibited Content（禁止的内容）
+
+以下内容**绝对禁止**出现在本仓库：
+
+- 压缩文件：`.zip`, `.7z`, `.rar`, `.tar`, `.gz`, `.bz2`, `.xz`
+- 源代码文件：`.py`, `.js`, `.ts`, `.jsx`, `.tsx`, `.sh`, `.ps1`, `.bat`, `.cmd`
+- 配置文件：`.yml`, `.yaml`, `.json`, `.env`, `.ini`, `.toml`
+- 可执行文件 / 二进制：`.exe`, `.dll`, `.so`, `.dylib`, `.bin`, `.iso`
+- 密钥与证书：`.pem`, `.key`, `.crt`, `.pfx`
+- 版本控制元数据：`.git/`, `.github/`, `.gitlab/`, `.gitignore`（公开库保留最小 .gitignore 仅用于排除垃圾文件）
+- CI/CD 工作流：`.github/workflows/`, `.gitlab-ci.yml`
+- 任何包含内部命名（如 BOT48、6AI 具体模块名）的文档
+- 任何未标记为 `SIMULATION` 的测试数据
+- 任何可能暴露私有仓库结构、内部 IP、域名或凭据的信息
+
+**违规文件将被公开层防火墙自动拦截，或由管理员立即移除。**
+
+---
+
+## 4. Code Visibility Policy（代码可见性策略）
+
+本仓库采用**公开外壳 + 私有核心**架构：
+
+- **公开仓库**：只包含文档、接口定义、示例与测试。
+- **私有仓库**：包含核心实现、模型权重、Router、Memory、Agent、Prompt 与密钥。
+- 公开代码中引用核心模块时，必须使用**抽象接口或占位符**，不得直接暴露私有依赖。
+- 私有仓库访问权限仅授予：
+  - 核心开发团队
+  - 与用户合作的 AI 助手（通过 fine-grained personal access token 只读授权）
+- 公开仓库的 CI 检查器（放在私有管理库）会在推送前验证文件类型与敏感模式。
+
+---
+
+## 5. Enforcement（执行）
+
+- 通过 `public_channel_guard.py` 扫描文件类型与路径。
+- 通过 GitHub Actions（仅存在于私有库）在合并前检查。
+- 人工审核所有 Markdown，确保无内部命名泄露。
+
+违反本政策的提交将被拒绝，并记录审计日志。
+
+---
+
+## 6. Important Notice
+
+此仓库是**概念参考**，不构成可执行产品、专利或商业承诺。  
+任何实际部署需独立工程与安全认证。
+
+---
+
+**End of Policy**
+
 # Wind Power Concept Architecture – Public Memory
 
 **Version**: 1.0  
